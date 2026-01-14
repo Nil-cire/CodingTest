@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CodingTest"
 include(":app")
- 
+include(":domain")
