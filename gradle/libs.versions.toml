@@ -18,6 +18,7 @@ loggingInterceptor = "4.12.0"
 material = "1.13.0"
 hilt = "2.57.2"
 ksp = "2.0.21-1.0.28"
+materialIconsExtended = "1.7.8"
 navigationCompose = "2.9.6"
 okhttp = "4.12.0"
 retrofit = "3.0.0"
@@ -26,6 +27,7 @@ material3 = "1.4.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
