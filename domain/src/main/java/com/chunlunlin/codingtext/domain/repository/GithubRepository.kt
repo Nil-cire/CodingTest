@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface GithubRepository {
 
-    fun getUsers(): Flow<List<GithubUserEntity?>>
+    fun getUsers(): Flow<List<GithubUserEntity>>
 
     fun getUserDetail(login: String): Flow<GithubUserEntity?>
 }
