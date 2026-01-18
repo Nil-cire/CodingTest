@@ -6,6 +6,14 @@
     <string name="loading">Loading … </string>
     <string name="open_link_fail">Fail to open link</string>
 
+    <!--network-error-->
+    <string name="error_network_connection">No internet connection. Please check your network settings.</string>
+    <string name="error_network_unauthorized">Unauthorized. Please log in again.</string>
+    <string name="error_network_not_found">The requested user or resource could not be found.</string>
+    <string name="error_network_timeout">The server is taking too long to respond. Please try again.</string>
+    <string name="error_network_unknown">An unexpected error occurred: %s</string>
+    <string name="error_common">Something went wrong. Please try again later.</string>
+
     <!--user-list-screen-->
     <string name="user_list_screen_app_title">Github Users</string>
     <string name="user_list_screen_no_user_hint">No users found</string>
