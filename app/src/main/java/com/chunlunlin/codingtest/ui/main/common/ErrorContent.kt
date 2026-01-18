@@ -16,7 +16,7 @@ import com.chunlunlin.codingtest.R
 @Composable
 fun ErrorContent(
     message: String,
-    onRetry: () -> Unit,
+    onRetry: (() -> Unit)?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -28,10 +28,12 @@ fun ErrorContent(
             color = MaterialTheme.colorScheme.error
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        if (onRetry != null) {
+            Spacer(modifier = Modifier.height(12.dp))
 
-        Button(onClick = onRetry) {
-            Text(stringResource(R.string.retry))
+            Button(onClick = onRetry) {
+                Text(stringResource(R.string.retry))
+            }
         }
     }
 }
