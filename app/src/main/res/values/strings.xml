@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">CodingTest</string>
+
+    <!--common-->
+    <string name="retry">Retry</string>
+    <string name="loading">Loading … </string>
+    <string name="open_link_fail">Fail to open link</string>
+
+    <!--user-list-screen-->
+    <string name="user_list_screen_app_title">Github Users</string>
+    <string name="user_list_screen_no_user_hint">No users found</string>
+    <string name="user_list_screen_admin_user">Admin</string>
+
+    <!--user-detail-screen-->
+    <string name="user_detail_screen_empty_login_error_message">Missing user info</string>
+    <string name="user_detail_screen_repos_subtitle">Repos</string>
+    <string name="user_detail_screen_gists_subtitle">Gists</string>
+    <string name="user_detail_screen_followers_subtitle">Followers</string>
+    <string name="user_detail_screen_following_subtitle">Following</string>
+    <string name="user_detail_screen_blog_subtitle">Blog</string>
+    <string name="user_detail_screen_company_subtitle">Company</string>
+    <string name="user_detail_screen_location_subtitle">Location</string>
+    <string name="user_detail_screen_email_subtitle">Email</string>
 </resources>
