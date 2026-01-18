@@ -70,8 +70,9 @@ fun UserListScreen(
                 }
 
                 is UiState.Error -> {
+                    val errorMessage = state.exception.toErrorMessage()
                     ErrorContent(
-                        message = state.message,
+                        message = errorMessage,
                         onRetry = viewModel::fetchUsers,
                         modifier = Modifier.align(Alignment.Center)
                     )

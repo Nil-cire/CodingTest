@@ -55,7 +55,7 @@ fun UserDetailScreen(
 
                 is UiState.Error ->
                     ErrorContent(
-                        "Error: ${state.message}",
+                        "Error: ${state.exception.toErrorMessage()}",
                         null,
                         modifier = Modifier.align(Alignment.Center)
                     )
