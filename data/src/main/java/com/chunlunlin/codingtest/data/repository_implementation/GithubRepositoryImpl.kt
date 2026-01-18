@@ -4,6 +4,7 @@ import com.chunlunlin.codingtest.data.data_source.GithubDataSource
 import com.chunlunlin.codingtest.data.mapper.toEntity
 import com.chunlunlin.codingtest.data.network.NetworkResult
 import com.chunlunlin.codingtest.data.network.toUseCaseException
+import com.chunlunlin.codingtext.domain.entity.GithubUserDetailEntity
 import com.chunlunlin.codingtext.domain.entity.GithubUserEntity
 import com.chunlunlin.codingtext.domain.repository.GithubRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -31,7 +32,7 @@ class GithubRepositoryImpl @Inject constructor(
             }
             .flowOn(ioDispatcher)
 
-    override fun getUserDetail(login: String): Flow<GithubUserEntity?> =
+    override fun getUserDetail(login: String): Flow<GithubUserDetailEntity> =
         remoteDataSource.getUserDetail(login)
             .map { result ->
                 when (result) {

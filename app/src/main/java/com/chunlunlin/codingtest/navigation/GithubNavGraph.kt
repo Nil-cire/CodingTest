@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.chunlunlin.codingtest.ui.main.user_detail.UserDetailScreen
 import com.chunlunlin.codingtest.ui.main.user_list.UserListScreen
 
 @Composable
@@ -16,8 +18,16 @@ fun GithubNavGraph(navController: NavHostController = rememberNavController()) {
         composable<ScreenRoute.UserList> {
             UserListScreen(
                 onUserClick = { user ->
-                    // todo: navigation to detail page
+                    navController.navigate(ScreenRoute.UserDetail(login = user.login))
                 }
+            )
+        }
+
+        composable<ScreenRoute.UserDetail> { backStackEntry ->
+            val args = backStackEntry.toRoute<ScreenRoute.UserDetail>()
+            UserDetailScreen(
+                login = args.login,
+                onBackClick = { navController.navigateUp() }
             )
         }
     }
