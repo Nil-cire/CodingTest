@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chunlunlin.codingtest.ui.main.common.ErrorContent
+import com.chunlunlin.codingtest.ui.main.core.UiState
+import com.chunlunlin.codingtest.ui.main.utils.toErrorMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,17 +50,19 @@ fun UserDetailScreen(
             contentAlignment = Alignment.Center
         ) {
             when (val state = uiState) {
-                UserDetailUiState.Loading ->
+                UiState.Loading ->
                     CircularProgressIndicator(Modifier.align(Alignment.Center))
 
-                is UserDetailUiState.Error ->
+                is UiState.Error ->
                     ErrorContent(
                         "Error: ${state.message}",
                         null,
                         modifier = Modifier.align(Alignment.Center)
                     )
-                is UserDetailUiState.Success -> {
-                    UserDetailContent(user = state.user)
+
+                is UiState.Success -> {
+                    val user = state.data
+                    UserDetailContent(user = user)
                 }
             }
         }

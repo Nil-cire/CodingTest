@@ -3,14 +3,13 @@ package com.chunlunlin.codingtest.ui.main.user_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chunlunlin.codingtext.domain.entity.GithubUserDetailEntity
+import com.chunlunlin.codingtest.ui.main.core.UiState
+import com.chunlunlin.codingtest.ui.main.utils.collectAsUiState
 import com.chunlunlin.codingtext.domain.use_case.GetGithubUserDetailUseCase
+import com.chunlunlin.codingtext.domain.use_case.UseCaseException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -24,27 +23,23 @@ class UserDetailViewModel @Inject constructor(
 
     val uiState = if (userLogin == null) {
         flow {
-            emit(UserDetailUiState.Error("Missing user info"))
+            emit(UiState.Error(UseCaseException.Unknown("Missing user login")))
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = UserDetailUiState.Loading
+            initialValue = UiState.Loading
         )
     } else {
         getGithubUserDetailUseCase(userLogin)
-            .map<GithubUserDetailEntity, UserDetailUiState> { UserDetailUiState.Success(it) }
-            .onStart { emit(UserDetailUiState.Loading) }
-            .catch { emit(UserDetailUiState.Error(it.message ?: "Error")) }
+            .collectAsUiState(
+                transform = { UiState.Success(it) },
+                initialValue = UiState.Loading,
+                onError = { UiState.Error(it) }
+            )
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
-                initialValue = UserDetailUiState.Loading
+                initialValue = UiState.Loading
             )
     }
-}
-
-sealed class UserDetailUiState {
-    object Loading : UserDetailUiState()
-    data class Success(val user: GithubUserDetailEntity) : UserDetailUiState()
-    data class Error(val message: String) : UserDetailUiState()
 }
