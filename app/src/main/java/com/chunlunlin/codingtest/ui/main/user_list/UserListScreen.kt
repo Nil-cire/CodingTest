@@ -36,6 +36,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.chunlunlin.codingtest.R
 import com.chunlunlin.codingtest.ui.main.common.ErrorContent
+import com.chunlunlin.codingtest.ui.main.core.UiState
+import com.chunlunlin.codingtest.ui.main.utils.toErrorMessage
 import com.chunlunlin.codingtext.domain.entity.GithubUserEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +53,7 @@ fun UserListScreen(
         topBar = { TopAppBar(title = { Text(stringResource(R.string.user_list_screen_app_title)) }) }
     ) { padding ->
         PullToRefreshBox(
-            isRefreshing = uiState is UserListUiState.Loading,
+            isRefreshing = uiState is UiState.Loading,
             onRefresh = { viewModel.fetchUsers() },
             state = pullToRefreshState,
             modifier = Modifier
@@ -60,30 +62,32 @@ fun UserListScreen(
         ) {
             val state = uiState
             when (state) {
-                UserListUiState.Loading -> {
+                UiState.Loading -> {
                     Text(
                         stringResource(R.string.loading),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
 
-                is UserListUiState.Error -> {
+                is UiState.Error -> {
+                    val errorMessage = state.exception.toErrorMessage()
                     ErrorContent(
-                        message = state.message,
+                        message = errorMessage,
                         onRetry = viewModel::fetchUsers,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
 
-                is UserListUiState.Success -> {
-                    if (state.users.isEmpty()) {
+                is UiState.Success -> {
+                    val users = state.data
+                    if (users.isEmpty()) {
                         Text(
                             stringResource(R.string.user_list_screen_no_user_hint),
                             modifier = Modifier.align(Alignment.Center)
                         )
                     } else {
                         UserListSuccessContent(
-                            users = state.users,
+                            users = users,
                             onUserClick = onUserClick
                         )
                     }

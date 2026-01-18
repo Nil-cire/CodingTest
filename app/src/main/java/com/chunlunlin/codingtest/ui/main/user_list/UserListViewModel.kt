@@ -2,16 +2,14 @@ package com.chunlunlin.codingtest.ui.main.user_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chunlunlin.codingtext.domain.entity.GithubUserEntity
+import com.chunlunlin.codingtest.ui.main.core.UiState
+import com.chunlunlin.codingtest.ui.main.utils.collectAsUiState
 import com.chunlunlin.codingtext.domain.use_case.GetGithubUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -25,13 +23,15 @@ class UserListViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiState = fetchUsersRetryTrigger.flatMapLatest {
         getGithubUsersUseCase()
-            .map<List<GithubUserEntity>, UserListUiState> { UserListUiState.Success(it) }
-            .onStart { emit(UserListUiState.Loading) }
-            .catch { emit(UserListUiState.Error(it.message ?: "Error")) }
+            .collectAsUiState(
+                transform = { UiState.Success(it) },
+                initialValue = UiState.Loading,
+                onError = { UiState.Error(it) }
+            )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = UserListUiState.Loading
+        initialValue = UiState.Loading
     )
 
     fun fetchUsers() {
@@ -39,8 +39,8 @@ class UserListViewModel @Inject constructor(
     }
 }
 
-sealed interface UserListUiState {
-    object Loading : UserListUiState
-    data class Success(val users: List<GithubUserEntity>) : UserListUiState
-    data class Error(val message: String) : UserListUiState
-}
+//sealed interface UserListUiState {
+//    object Loading : UserListUiState
+//    data class Success(val users: List<GithubUserEntity>) : UserListUiState
+//    data class Error(val error: UseCaseException) : UserListUiState
+//}
